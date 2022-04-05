@@ -1,0 +1,11 @@
+*~
+.cache
+crash.log
+.DS_Store
+.env
+.jekyll-metadata
+.sass-cache/
+_site/
+tmp/
+_tmp/
+.vscode

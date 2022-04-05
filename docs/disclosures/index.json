@@ -1,0 +1,22 @@
+---
+comment: list all PDFs in the disclosures directory
+---
+{%- assign docs  = site.static_files  | sort:'path' -%}
+{%- assign first = true -%}
+{
+  "files": [
+{%- for theDoc in docs %}
+{%- if theDoc.extname == '.pdf' %}
+{%- assign path_components = theDoc.path | split: "/" %}
+{%- if path_components[1] == 'disclosures' %}
+{%- if first %}{% assign first = false %}{% else %},{% endif %}
+    {
+      "last_modified": "{{theDoc.modified_time | date: "%Y-%m-%dT%H:%M:%SZ"}}",
+      "url": "{{site.origin}}{{theDoc.path}}"
+    }
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+  ],
+  "success": true
+}

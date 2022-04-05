@@ -1,0 +1,10 @@
+#
+# _config.yml for mock.moven.com
+#
+
+exclude: [ "CNAME", "**/*.docx" ]
+markdown: kramdown
+origin: "https://mock.moven.com"
+plugins:
+  - jekyll-redirect-from
+timezone: UTC

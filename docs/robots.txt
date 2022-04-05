@@ -1,0 +1,5 @@
+#
+# robots.txt - nothing is indexable here: go away
+#
+User-agent: *
+Disallow: /
