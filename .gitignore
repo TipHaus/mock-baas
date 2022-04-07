@@ -9,3 +9,4 @@ _site/
 tmp/
 _tmp/
 .vscode
+docs/.jekyll-cache

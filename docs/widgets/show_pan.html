@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Card Details</title>
+    <!--
+      This is a test page - the real page is embedded in app-binab.
+    -->
+    <script src="show_pan.js"></script>
+    <style>
+      html, body {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Trebuchet MS', sans-serif;
+        justify-content: center;
+        padding-top: 20px;
+        width: 100%;
+      }
+
+      #card {
+        background-color: #E9E9E9 /*CARD_BACKGROUND_COLOR*/;
+        border-radius: 26px;
+        display: flex;
+        flex-direction: column;
+        height: 40%;
+        width: 90%;
+      }
+
+      #top {
+        color: #777 /*CARD_TEXT_COLOR*/;
+        font-size: 24px;
+        min-height: 55px;
+        padding: 25px 0px 0px 25px;
+      }
+
+      #middle {
+        align-items: center;
+        background-color: #FFFFFF85 /*CARD_STRIPE_COLOR*/;
+        border-bottom: solid 1px white;
+        border-top: solid 1px white;
+        display: flex;
+        height: 85px;
+      }
+
+      #middle iframe {
+        height: 100%;
+        width: 100%;
+      }
+
+      #cvv {
+        color: #777 /*CARD_TEXT_COLOR*/;
+        font-family: 'Barlow', sans-serif;
+        font-size: 12px;
+      }
+
+      #exp {
+        color: #777 /*CARD_TEXT_COLOR*/;
+        font-family: 'Barlow', sans-serif;
+        font-size: 12px;
+        margin-left: 25px;
+      }
+
+      #display-card-cvv {
+        display: flex;
+        margin-left: 15px;
+        width: 90%;
+      }
+
+      #display-card-exp {
+        display: flex;
+        height: 100%;
+        margin-left: 15px;
+      }
+
+      #display-card-pan {
+        display: flex;
+        height: 50px;
+        justify-content: center;
+        padding: 10px 0px 10px;
+        width: 100%;
+      }
+
+      #copy-card-pan {
+        display: flex;
+        height: 250px;
+        position: absolute;
+        width: 90%;
+      }
+
+      #copy-text {
+        color: #222 /*COPY_TEXT_COLOR*/;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="card">
+      <div id="top">Card Details</div>
+      <div id="middle">
+        <div id="exp">EXP</div>
+        <div id="display-card-exp"></div>
+        <div id="cvv">CVV</div>
+        <div id="display-card-cvv"></div>
+      </div>
+      <div id="display-card-pan"></div>
+    </div>
+    <div id="copy-card-pan"></div>
+    <div id="copy-text">press anywhere to copy card number</div>
+
+    <script>
+      const styles = {
+        html: {
+          'align-items': 'center',
+          display: 'flex',
+          height: '100%',
+          width: '100%',
+        },
+        span: {
+          color: '#777', /*CARD_TEXT_COLOR*/
+          'font-family': 'Barlow, sans-serif',
+          'font-size': '24px',
+        }
+      }
+      const panStyle = {
+        html: {
+          'align-items': 'center',
+          display: 'flex',
+          'justify-content': 'center',
+          height: '100%',
+          width: '100%',
+        },
+        span: {
+          color: '#777', /*CARD_TEXT_COLOR*/
+          'font-family': 'Barlow, sans-serif',
+          'font-size': '24px',
+          'letter-spacing': '3px',
+        }
+      }
+
+      marqeta.bootstrap({
+        clientAccessToken: "card_a548e6ff-39c8-4e6a-ac92-7cb566796354_1",
+        integrationType: 'custom',
+        showPan: {
+          cardPan: { domId: 'display-card-pan', format: true, styles: panStyle },
+          cardExp: { domId: 'display-card-exp', format: true, styles },
+          cardCvv: { domId: 'display-card-cvv', styles },
+          copyCardPan: {
+            domId: 'copy-card-pan',
+            mode: 'transparent',
+            onCopySuccess: () => console.log("PAN successfully copied"),
+          },
+        },
+        containerId: 'card',
+        callbackEvents: {
+          onSuccess: () => console.log("Bootstrap success"),
+          onFailure: () => console.log("Bootstrap failure"),
+        },
+      });
+    </script>
+
+  </body>
+
+</html>

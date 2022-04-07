@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Card Details</title>
+  </head>
+
+  <body>
+    <span id="target"></span>
+
+    <script>
+
+// First two PAN digits
+const prefix = '55';
+
+// Deterministic fake CVV from payInsId
+function fakeCvv(payInsId) {
+  const hex = payInsId
+    .replace(/[^0-9A-Fa-f]/g, '')
+    .split('')
+    .reverse()
+    .join('');
+  const value = (parseInt(hex, 16) / 3 % 1000).toFixed(0);
+  return value.padStart(3, '0').substring(0, 3);
+}
+
+// Fake expiration 13 months in the future
+function fakeExp() {
+    const when = new Date();
+    when.setMonth(when.getMonth() + 13);
+    return `${String(when.getMonth() + 1)}/${String(when.getFullYear()).substring(2)}`;
+}
+
+// Deterministic fake PAN from payInsId
+function fakePan(prefix, payInsId) {
+  const hex = payInsId
+    .replace(/[^0-9A-Fa-f]/g, '')
+    .split('')
+    .reverse()
+    .join('');
+  const middle = String(parseInt(hex, 16) % 10000000000000);
+  const base = prefix + middle;
+  const padded = base.padEnd(15, '0').substring(0, 15);
+  const full = padded + luhn(padded);
+
+  return full.replace(/([0-9]{4}\B)/g, '$1-');
+}
+
+// Valid check digit
+function luhn(str) {
+  const sum = str
+    .replace(/[^0-9]/g, '')
+    .split('')
+    .reverse()
+    .reduce((previousValue, currentValue, currentIndex) => {
+      let digit = Number(currentValue);
+      if (currentIndex % 2 === 0) {
+        digit += digit;
+        if (digit > 9) {
+          digit = (digit % 10) + 1;
+        }
+      }
+
+      return previousValue + digit;
+    }, 0);
+
+  return String((10 - (sum % 10)) % 10);
+}
+
+// Get options from URL fragment ID
+const options = JSON.parse(atob(window.location.hash.substring(1)) || '{}');
+
+// Apply styles
+if (options.value && options.value.styles) {
+  for (const [tag, styles] of Object.entries(options.value.styles)) {
+    const tags = window.document.getElementsByTagName(tag);
+    for (let i = 0; tags.length > i; i++) {
+      for (const [prop, value] of Object.entries(styles)) {
+        const camelProp = prop.toLowerCase().replace(/-./g, function (p) {
+          return  p[1].toUpperCase();
+        });
+        tags[i].style[camelProp] = value;
+      }
+    }
+  }
+}
+
+// Show the specified PAN data
+let text = '';
+switch (options.key) {
+  case 'cardPan':
+    text = fakePan(prefix, options.token);
+    break;
+
+  case 'cardExp':
+    text = fakeExp();
+    break;
+
+  case 'cardCvv':
+    text = fakeCvv(options.token);
+    break;
+}
+
+window.document.getElementById('target').innerText = text;
+
+// Attach copy-PAN click handler
+if (options.key === 'copyCardPan') {
+  window.document.getElementsByTagName('html')[0].addEventListener('click', function () {
+    const pan = fakePan(prefix, options.token);
+    window.navigator.clipboard.writeText(pan).then(function () {
+      window.parent.postMessage('copied', '*');
+    });
+  });
+}
+
+    </script>
+  </body>
+
+</html>
