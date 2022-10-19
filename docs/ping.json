@@ -4,6 +4,7 @@ comment: Standard ping endpoint (needs to be `.json` so mimetype is served corre
 {
   "buildDate": "{{site.time|date: "%Y%m%dT%H%M%SZ"}}",
   "buildId": "{{site.github.build_revision | default: site.data.build_revision | default: 'local' | slice: 0, 7 }}",
+  "helmChartVersion": "n/a",
   "message": "OK",
   "success": true
 }
