@@ -2,4 +2,4 @@
 
 * @moven/backend-owners
 
-/chart/ @infrastructure-owners
+/chart/ @moven/infrastructure-owners
