@@ -1,3 +1,5 @@
 # Managed through Terraform - do not change directly
 
 * @moven/backend-owners
+
+/chart/ @infrastructure-owners
